@@ -88,8 +88,8 @@ local defaults; do
                 });
                 library:Create("Frame", {
                     Name = 'Underline';
-                    Size = UDim2.new(1, 0, 0, 2);
-                    Position = UDim2.new(0, 0, 1, -2);
+                    Size = UDim2.new(1, 0, 0, 1);
+                    Position = UDim2.new(0, 0, 1, -1);
                     BackgroundColor3 = (options.underlinecolor ~= "rainbow" and options.underlinecolor or Color3.new());
                     BorderSizePixel = 0;
                     ZIndex = 3;
