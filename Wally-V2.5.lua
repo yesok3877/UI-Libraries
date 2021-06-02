@@ -1,4 +1,4 @@
-local library = {count = 0, queue = {}, callbacks = {}, rainbowtable = {}, toggled = true, binds = {}};
+local libr= 0, queue = {}, callbacks = {}, rainbowtable = {}, toggled = true, binds = {}};
 local defaults; do
     local dragger = {}; do
         local mouse        = game:GetService("Players").LocalPlayer:GetMouse();
@@ -79,7 +79,7 @@ local defaults; do
                     BackgroundTransparency = 1;
                     Text = "-";
                     TextSize = options.titlesize;
-                    Font = options.titlefont;--Enum.Font.Code;
+                    Font = options.titlefont;
                     Name = 'window_toggle';
                     TextColor3 = options.titletextcolor;
                     TextStrokeTransparency = library.options.titlestroke;
@@ -270,7 +270,7 @@ local defaults; do
             }
         end
         
-        function types:Box(name, options, callback) --type, default, data, location, flag)
+        function types:Box(name, options, callback)
             local type   = options.type or "";
             local default = options.default or "";
             local data = options.data
@@ -506,7 +506,7 @@ local defaults; do
             local min     = options.min or 0;
             local max      = options.max or 1;
             local location = options.location or self.flags;
-            local precise  = options.precise  or false -- e.g 0, 1 vs 0, 0.1, 0.2, ...
+            local precise  = options.precise  or false
             local flag     = options.flag or "";
             local callback = callback or function() end
 
@@ -533,7 +533,6 @@ local defaults; do
                         Size = UDim2.new(0, 60, 0, 20);
                         Position = UDim2.new(1, -65, 0, 3);
                         BackgroundTransparency = 1;
-                        --BorderColor3 = library.options.bordercolor;
                         BorderSizePixel = 0;
                         library:Create('TextLabel', {
                             Name = 'ValueLabel';
