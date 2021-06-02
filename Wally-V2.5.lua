@@ -19,7 +19,7 @@ local defaults; do
                             local objectPosition = Vector2.new(mouse.X - frame.AbsolutePosition.X, mouse.Y - frame.AbsolutePosition.Y);
                             while heartbeat:wait() and inputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
                                 pcall(function()
-                                    frame:TweenPosition(UDim2.new(0, mouse.X - objectPosition.X, 0, mouse.Y - objectPosition.Y), 'Out', 'Linear', 0.1, true);
+                                    frame:TweenPosition(UDim2.new(0, mouse.X - objectPosition.X, 0, mouse.Y - objectPosition.Y), 'Out', 'Linear', 0.02, true);
                                 end)
                             end
                         end
@@ -995,6 +995,7 @@ local defaults; do
 		
         if (not library.container) then
             library.container = self:Create("ScreenGui", {
+                Name = options.name;
                 self:Create('Frame', {
                     Name = 'Container';
                     Size = UDim2.new(1, -30, 1, 0);
