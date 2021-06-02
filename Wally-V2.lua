@@ -47,15 +47,7 @@
    
     local defaults = {
         txtcolor = Color3.fromRGB(255, 255, 255),
---      underline = Color3.fromRGB(0, 255, 140),
-        underline = function()
-            while true do
-            	for Hue = 0,1,0.003 do
-            	    wait()
-            		return Color3.fromHSV(Hue, 1, 1)
-            	end
-            end
-        end,
+        underline = Color3.fromRGB(0, 255, 140),
         barcolor = Color3.fromRGB(40, 40, 40),
         bgcolor = Color3.fromRGB(30, 30, 30),
     }
