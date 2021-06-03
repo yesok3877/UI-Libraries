@@ -490,7 +490,7 @@ local defaults; do
                     TextColor3 = library.options.textcolor;
                     Position = determinedPos;
                     Size     = (secondarySize or UDim2.new(1, 0, 1, 0));
-                    Font = library.options.font;
+                    Font = Enum.Font.SourceSansBold;
                     TextSize = library.options.fontsize;
                     TextStrokeTransparency = library.options.textstroke;
                     TextStrokeColor3 = library.options.strokecolor;
