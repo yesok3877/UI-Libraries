@@ -274,10 +274,6 @@ function library:Notify(title, message, time, buttons, _function)
 	end
 end
 
-function library:LoadTheme(theme)
-
-end
-
 function library:LoadConfiguration(cfg)
 	table.foreach(cfg, function(a,b)
 		if library.pointers[a] then
@@ -670,7 +666,7 @@ function library:CreateWindow(csize, cpos)
 			LocalTab.main = library:create("Frame", {
 				Size = UDim2.new(1,0,0,0),
 				BackgroundColor3 = library.theme.tabselected,
-				BorderColor3 = library.theme.outline,
+				BorderColor3 = library.theme.main,
 				BorderSizePixel = 2,
 				BorderMode = "Outline",
 				Parent = self.row
@@ -694,6 +690,7 @@ function library:CreateWindow(csize, cpos)
 			LocalTab.content = library:create("Frame", {
 				Size = UDim2.new(1,0,1,0),
 				BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+				BorderColor3 = library.theme.outline,
 				BackgroundTransparency = 0,
 				Parent = LocalTab.main
 			})
@@ -755,6 +752,7 @@ function library:CreateWindow(csize, cpos)
 					LayoutOrder = self.order,
 					Size = UDim2.new(1,0,0,library.settings.textsize + 2),
 					BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+					BorderColor3 = library.theme.main,
 					BackgroundTransparency = 0,
 					Text = tostring(text),
 					TextColor3 = library.theme.text,
@@ -762,6 +760,7 @@ function library:CreateWindow(csize, cpos)
 					TextSize = library.settings.textsize,
 					TextStrokeTransparency = library.settings.textstroke and 0 or 1,
 					TextXAlignment = Enum.TextXAlignment.Center,
+					AutoButtonColor = false,
 					Parent = self.content,
 				})
 				
@@ -845,15 +844,6 @@ function library:CreateWindow(csize, cpos)
 			
 			function LocalTab:AddTextBox(text, txtval, pointername, _function, keep)
 				local box = {value = ""}
-				
-				if txtval then
-					if typeof(txtval) == "function" then
-						_function = txtval
-						txtval = ""
-					elseif typeof(txtval) == "string" then
-						box.value = txtval
-					end
-				end
 
 				if keep then
 					if typeof(keep) == "string" then
@@ -885,9 +875,8 @@ function library:CreateWindow(csize, cpos)
 					BackgroundTransparency = 0,
 					BackgroundColor3 = library.theme.tabholder,
 					BorderColor3 = library.theme.main,
-					Text = txtval,
 					TextColor3 = library.theme.text,
-					PlaceholderText = text,
+					PlaceholderText = txtval,
 					PlaceholderColor3 = library.theme.textboxtext,
 					Font = library.settings.font,
 					TextSize = library.settings.textsize-2,
@@ -926,7 +915,7 @@ function library:CreateWindow(csize, cpos)
                 
 				LocalTab.main.Size = UDim2.new(1,0,0,self.layout.AbsoluteContentSize.Y+18)
 
-                box:Set(txtval)
+                box:Set("")
                 library.pointers[pointername] = box
 				
 				return box
@@ -952,6 +941,7 @@ function library:CreateWindow(csize, cpos)
 					TextSize = library.settings.textsize,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					TextYAlignment = Enum.TextYAlignment.Top,
+					AutoButtonColor = false,
 					Parent = self.content,
 				})
 				
@@ -965,6 +955,7 @@ function library:CreateWindow(csize, cpos)
 					TextColor3 = library.theme.text,
 					Font = library.settings.font,
 					TextSize = library.settings.textsize,
+					AutoButtonColor = false,
 					Parent = dropdown.button,
 				})
 				
@@ -1099,7 +1090,7 @@ function library:CreateWindow(csize, cpos)
 
 				function dropdown:Search(text)
 					for i,v in pairs(dropdown.content) do
-						if v.Text:match(text) then
+						if v.Text:lower():match(text) then
 							v.Visible = true
 						else
 							v.Visible = false
@@ -1142,10 +1133,10 @@ function library:CreateWindow(csize, cpos)
 				return dropdown
             end
 			
-			function LocalTab:AddMultiDropdown(text, optionz, defVal, pointername, _function, push)
+			function LocalTab:AddMultiDropdown(text, defOptions, defVal, pointername, _function, push)
 				_function = _function or function() end
 				
-				local dropdown = {order = 0, closed = true, options = optionz, value = defVal}
+				local dropdown = {order = 0, closed = true, options = defOptions, value = defVal}
 				
 				dropdown.content = {}
 				checkRow()
@@ -1162,6 +1153,7 @@ function library:CreateWindow(csize, cpos)
 					TextSize = library.settings.textsize,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					TextYAlignment = Enum.TextYAlignment.Top,
+					AutoButtonColor = false,
 					Parent = self.content,
 				})
 				
@@ -1175,6 +1167,7 @@ function library:CreateWindow(csize, cpos)
 					TextColor3 = library.theme.text,
 					Font = library.settings.font,
 					TextSize = library.settings.textsize,
+					AutoButtonColor = false,
 					Parent = dropdown.button,
 				})
 				
@@ -1309,7 +1302,7 @@ function library:CreateWindow(csize, cpos)
 
 				function dropdown:Search(text)
 					for i,v in pairs(dropdown.content) do
-						if v.Text:match(text) then
+						if v.Text:lower():match(text) then
 							v.Visible = true
 						else
 							v.Visible = false
@@ -1598,7 +1591,7 @@ function library:CreateWindow(csize, cpos)
 				
 				bind.button.InputBegan:connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 then
-						bind.label.Text = "..."
+						bind.label.Text = ". . ."
 						bind.label.Size = UDim2.new(0,-bind.label.TextBounds.X-8,1,-4)
 					end
 				end)
@@ -1703,7 +1696,7 @@ function library:CreateWindow(csize, cpos)
 				})
 				
 				color.colorpicker = library:create("TextButton", {
-					ZIndex = 165,
+					ZIndex = 166,
 					Position = UDim2.new(0,20,0,20),
 					Size = UDim2.new(0,200,0,220),
 					BackgroundColor3 = library.theme.tabholder,
@@ -1714,7 +1707,7 @@ function library:CreateWindow(csize, cpos)
 				})
 				
 				color.hueselector = library:create("ImageLabel", {
-					ZIndex = 165,
+					ZIndex = 166,
 					Position = UDim2.new(0,5,0,5),
 					Size = UDim2.new(0,170,0,170),
 					Image = "http://www.roblox.com/asset/?id=4155801252",
@@ -1724,7 +1717,7 @@ function library:CreateWindow(csize, cpos)
 				})
 				
 				color.hueselectorpointer = library:create("Frame", {
-					ZIndex = 165,
+					ZIndex = 166,
 					AnchorPoint = Vector2.new(0.5,0.5),
 					Position = UDim2.new(0.5,0,0,0),
 					Size = UDim2.new(0,6,0,6),
@@ -1732,11 +1725,11 @@ function library:CreateWindow(csize, cpos)
 				})
 				
 				color.colorselector = library:create("TextLabel", {
-					ZIndex = 165,
+					ZIndex = 166,
 					Position = UDim2.new(0,181,0,5),
 					Size = UDim2.new(0,14,0,170),
 					BackgroundColor3 = Color3.fromRGB(200,200,200),
-					BorderColor3 = library.theme.outline,
+					BorderSizePixel = 0,
 					Text = "",
 					Parent = color.colorpicker
 				})
@@ -1755,17 +1748,19 @@ function library:CreateWindow(csize, cpos)
 				})
 				
 				color.colorselectorpointer = library:create("Frame", {
-					ZIndex = 165,
+					ZIndex = 166,
 					AnchorPoint = Vector2.new(0.5,0.5),
-					Position = UDim2.new(0.5,0,0,0),
-					Size = UDim2.new(1,0,0,3),
+					Position = UDim2.new(0.47,0,0,0),
+					Size = UDim2.new(1.27,0,0,3),
+					BackgroundColor3 = library.theme.tabholder,
+					BorderColor3 = library.theme.outline,
 					Parent = color.colorselector
 				})
 				
 				color.rgbselector = library:create("TextBox", {
-					ZIndex = 165,
+					ZIndex = 166,
 					Position = UDim2.new(0,5,0,180),
-					Size = UDim2.new(0,170,0,14),
+					Size = UDim2.new(0,189,0,14),
 					BackgroundColor3 = library.theme.main,
 					BorderColor3 = library.theme.outline,
 					Text = "",
@@ -1778,9 +1773,9 @@ function library:CreateWindow(csize, cpos)
 				})
 				
 				color.hexselector = library:create("TextBox", {
-					ZIndex = 165,
+					ZIndex = 166,
 					Position = UDim2.new(0,5,0,200),
-					Size = UDim2.new(0,170,0,14),
+					Size = UDim2.new(0,189,0,14),
 					BackgroundColor3 = library.theme.main,
 					BorderColor3 = library.theme.outline,
 					Text = "",
@@ -1789,26 +1784,6 @@ function library:CreateWindow(csize, cpos)
 					TextSize = library.settings.textsize,
 					TextStrokeTransparency = library.settings.textstroke and 0 or 1,
 					TextXAlignment = Enum.TextXAlignment.Center,
-					Parent = color.colorpicker
-				})
-				
-				color.rgbcopy = library:create("ImageLabel", {
-					ZIndex = 165,
-					Position = UDim2.new(0,181,0,180),
-					Size = UDim2.new(0,14,0,14),
-					BackgroundColor3 = library.theme.main,
-					BorderColor3 = library.theme.outline,
-					Image = "http://www.roblox.com/asset/?id=3021120430",
-					Parent = color.colorpicker
-				})
-				
-				color.hexcopy = library:create("ImageLabel", {
-					ZIndex = 165,
-					Position = UDim2.new(0,181,0,200),
-					Size = UDim2.new(0,14,0,14),
-					BackgroundColor3 = library.theme.main,
-					BorderColor3 = library.theme.outline,
-					Image = "http://www.roblox.com/asset/?id=3021120430",
 					Parent = color.colorpicker
 				})
 				
@@ -1934,17 +1909,5 @@ function library:CreateWindow(csize, cpos)
 
 	return window
 end
-
---[[
-local function GetConfigs()
-	cfgs = {}
-	for i,v in pairs(syn_io_listdir("hexhub")) do
-		if v:sub(-10) == ".config" then
-			table.insert(cfgs, string.split(v, ".")[1]:sub(8))
-		end
-	end
-	return cfgs
-end
---]]
 
 return library
