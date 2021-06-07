@@ -1,4 +1,4 @@
-local TweenService, RunService, UserInputService,gui,dragging,dragInput,dragStart,startPos,cpt,cpf,cppicking,cppickingVal,cppickingAlpha,cphue,cpsat,cpval,focused,highest,focusedBox = game:GetService("TweenService"),game:GetService("RunService"), game:GetService("UserInputService")
+local TweenService, RunService, UserInputService, gui, dragging, dragInput, dragStart, startPos, cpt, cpf, cppicking, cppickingVal, cppickingAlpha, cphue, cpsat, cpval, focused, highest, focusedBox = game:GetService("TweenService"), game:GetService("RunService"), game:GetService("UserInputService")
 local cpalpha = 0
 
 local function updateDrag(input)
